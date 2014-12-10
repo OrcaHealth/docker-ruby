@@ -1,4 +1,4 @@
-FROM orcahealth/baseimage:0.9.15
+FROM orcahealth/baseimage:0.0.1
 MAINTAINER Orca Health <info@orcahealth.com>
 
 ENV RUBY_MAJOR 2.1
@@ -40,27 +40,11 @@ RUN mkdir -p /usr/src/ruby \
   	&& make install \
   	&& rm -r /usr/src/ruby
 
-# install things globally, for great justice
-ENV GEM_HOME /usr/local/bundle
-ENV PATH $GEM_HOME/bin:$PATH
-ENV BUNDLE_APP_CONFIG $GEM_HOME
+ENV PATH vendor/bundle/bin:$PATH
 
-# don't create ".bundle" in all our apps
-RUN echo 'gem: --no-rdoc --no-ri' >> "$HOME/.gemrc" \
+RUN echo 'gem: --no-rdoc --no-ri' >> /etc/gemrc \
     && gem install bundler \
-  	&& bundle config --global path "$GEM_HOME" \
-  	&& bundle config --global bin "$GEM_HOME/bin" \
-    && bundle config --global frozen 1 \
-    && chmod -R 755 $GEM_HOME
-    # && chown -R :users $GEM_HOME
+    && bundle config --global frozen 1
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-
-ONBUILD COPY Gemfile /usr/src/app/
-ONBUILD COPY Gemfile.lock /usr/src/app/
-
-ONBUILD COPY . /usr/src/app
-
-EXPOSE 3000
-CMD ["rails", "server"]
