@@ -1,8 +1,8 @@
-FROM orcahealth/baseimage:0.0.1
+FROM phusion/baseimage:latest
 MAINTAINER Orca Health <info@orcahealth.com>
 
-ENV RUBY_MAJOR 2.1
-ENV RUBY_VERSION 2.1.5
+ENV RUBY_MAJOR 2.2
+ENV RUBY_VERSION 2.2.2
 
 # Install ruby dependencies.
 RUN apt-get update -q \
