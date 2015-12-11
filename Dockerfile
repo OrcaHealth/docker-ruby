@@ -10,7 +10,6 @@ RUN apt-get update -q \
     && apt-get install -qy \
       autoconf \
       build-essential \
-      bison \
       libbz2-dev \
       libcurl4-openssl-dev \
       libevent-dev \
@@ -22,7 +21,6 @@ RUN apt-get update -q \
       libxml2-dev \
       libxslt-dev \
       libyaml-dev \
-      ruby \
       zlib1g-dev \
       --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
@@ -50,7 +48,6 @@ RUN mkdir -p /usr/src/ruby \
     && autoconf \
     && ./configure --disable-install-doc \
     && make -j"$(nproc)" \
-    && apt-get -y purge bison ruby \
     && apt-get autoremove -y \
     && make install \
     && rm -r /usr/src/ruby
